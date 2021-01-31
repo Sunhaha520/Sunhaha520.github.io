@@ -2082,7 +2082,13 @@ body {
         width: 960px;
         margin: 0 auto;
       }
-    body {
+    @font-face {
+      font-family: 'kuaileti';
+      src: url('/media/fonts/kuaileti.ttf');
+    }
+    * {
+        font-family: 'kuaileti';
+    }body {
       color: #555;
     }
     .next-md-body {
