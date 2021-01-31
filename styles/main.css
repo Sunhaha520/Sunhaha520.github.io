@@ -2074,12 +2074,12 @@ body {
     .nav-toggle .line {
       background-color: #eee !important;
     }.header {
-        width: 960px;
+        width: 1450px;
         margin: 0 auto;
       }
 
       .main-continer {
-        width: 960px;
+        width: 1450px;
         margin: 0 auto;
       }
     @font-face {
@@ -2088,7 +2088,11 @@ body {
     }
     * {
         font-family: 'kuaileti';
-    }body {
+    }
+    .post-body {
+      font-size: 16px !important
+    }
+    body {
       color: #555;
     }
     .next-md-body {
