@@ -8,7 +8,7 @@
 <meta name="keywords" content="Gridea静态个人博客">
 <meta name="description" content="温故而知新">
 <meta name="theme-color" content="#212529">
-<title>阿宇のBlog</title>
+<title>「找到适合自己的位置，细水长流地走下去，我花了20年呢。」──安倍夜郎 | 阿宇のBlog</title>
 <link rel="shortcut icon" href="/favicon.ico?v=1612167361807">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="stylesheet" href="/media/css/pisces.css">
@@ -29,7 +29,8 @@
 
 
 
-  <meta name="description" content="温故而知新">
+  <meta name="description" content="「找到适合自己的位置，细水长流地走下去，我花了20年呢。」──安倍夜郎" />
+  <meta name="keywords" content="生活杂谈" />
 </head>
 
 <body>
@@ -78,7 +79,7 @@
             
               
             
-            <li class="nav-item nav-item-active">
+            <li class="nav-item ">
               
               
                 <a href="/archives/" target="_self">
@@ -155,10 +156,26 @@
   <div class="main-continer">
     
     <div
-      class="section-layout  pisces">
+      class="section-layout pisces ">
       <div class="section-layout-wrapper">
-        <div id="sidebarMeta" class="sidebar">
-    
+        
+
+<div class="sidebar">
+  
+    <div class="sidebar-box box-shadow-wrapper bg-color right-motion" id="sidebar">
+      
+        <div class="post-list-sidebar">
+          <div class="sidebar-title">
+            <span id="tocSideBar" class="sidebar-title-item sidebar-title-active">文章目录</span>
+            <span id="metaSideBar" class="sidebar-title-item">站点概览</span>
+          </div>
+        </div>
+      
+      <div class="sidebar-body pisces" id="sidebar_body">
+        
+          
+            <div class="post-side-meta" id="post_side_meta">
+              
 <div class="sidebar-wrapper box-shadow-wrapper bg-color">
   <div class="sidebar-item">
     <img class="site-author-image right-motion" src="/images/avatar.png"/>
@@ -219,89 +236,442 @@
 
 
 </div>
+            </div>
+            <div class="post-toc sidebar-body-active" id="post_toc" style="opacity: 1;">
+              <div class="toc-box right-motion">
+  <div class="toc-wrapper auto-number auto"
+    id="toc_wrapper">
+    <ul class="markdownIt-TOC">
+<li><a href="#%E5%9B%9B%E5%8D%81%E4%B8%80%E5%B2%81%E6%89%8D%E5%87%BA%E9%81%93%E5%A4%AA%E4%B8%8D%E5%AF%BB%E5%B8%B8%E4%BA%86%E5%90%A7">四十一岁才出道，太不寻常了吧？😬</a></li>
+</ul>
+
+  </div>
 </div>
+
 <script>
-  let sidebarMeta = document.querySelector('#sidebarMeta');
-  let scheme = 'pisces';
-  let sidebarWrapper = document.querySelector('.sidebar-wrapper');
-  if (sidebarMeta && (scheme === 'pisces' || scheme === 'gemini')) {
-    document.addEventListener('scroll', function(e) {
-      if (document.scrollingElement.scrollTop > parseInt(sidebarMeta.style.marginTop) + 10) {
-        sidebarWrapper.classList.add('home-sidebar-fixed')
-      } else {
-        sidebarWrapper.classList.remove('home-sidebar-fixed')
+
+  let lastTop = 0, lList = [], hList = [], postBody, lastIndex = -1;
+  let active = 'active-show', activeClass = 'active-current';
+  let tocWrapper = document.querySelector('#toc_wrapper');
+  let tocContent = tocWrapper.children[0];
+  let autoNumber = tocWrapper && tocWrapper.classList.contains('auto-number');
+
+  function addTocNumber(elem, deep) {
+    if (!elem) {
+      return;
+    }
+    let prop = elem.__proto__;
+
+    if (prop === HTMLUListElement.prototype) {
+      for (let i = 0; i < elem.children.length; i++) {
+        addTocNumber(elem.children[i], deep + (i + 1) + '.');
       }
+    } else if (prop === HTMLLIElement.prototype) {
+      // 保存li元素
+      if (elem.children[0].__proto__ === HTMLAnchorElement.prototype) {
+        lList.push(elem);
+      }
+      for (let i = 0; i < elem.children.length; i++) {
+        let cur = elem.children[i];
+        if (cur.__proto__ === HTMLAnchorElement.prototype) {
+          if (autoNumber) {
+            cur.text = deep + ' ' + cur.text;
+          }
+        } else if (cur.__proto__ === HTMLUListElement.prototype) {
+          addTocNumber(cur, deep);
+        }
+      }
+    }
+  }
+
+  function removeParentActiveClass() {
+    let parents = tocContent.querySelectorAll('.' + active)
+    parents.forEach(function (elem) {
+      elem.classList.remove(active);
     });
   }
-  </script>
-        <div class="section-box box-shadow-wrapper">
-          <section class="section archives-section bg-color posts-expand">
-            
 
-<div class="bg-color">
-  <div class="archive-timeline-box">
-    <div class="archive-timeline-title">
-      
-        <h2>非常好！目前共计2篇日志，继续努力！</h2>
-      
+  function addActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.add(activeClass);
+    }
+  }
+
+  function removeActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.remove(activeClass);
+    }
+  }
+
+  function addActiveLiElemment(elem, parent) {
+    if (!elem || elem === parent) {
+      return;
+    } else {
+      if (elem.__proto__ === HTMLLIElement.prototype) {
+        elem.classList.add(active);
+      }
+      addActiveLiElemment(elem.parentElement, parent);
+    }
+  }
+
+  function showToc() {
+    if (tocWrapper) {
+      postBody = document.querySelector('#post_body');
+      for (let i = 0; i < postBody.children.length; i++) {
+        if (postBody.children[i].__proto__ === HTMLHeadingElement.prototype) {
+          hList.push(postBody.children[i]);
+        }
+      }
+      if (tocWrapper.classList.contains('compress')) {
+        tocContent.classList.add('closed');
+      } else if (tocWrapper.classList.contains('no_compress')) {
+        tocContent.classList.add('expanded');
+      } else {
+        if (hList.length > 10) {
+          active = 'active-hidden'
+          tocContent.classList.add('closed');
+        } else {
+          tocContent.classList.add('expanded');
+        }
+      }
+    }
+  }
+
+  (function () {
+    // 处理不是从#一级标题开始目录
+    if (tocContent.children.length === 1 && tocContent.children[0].__proto__ === HTMLLIElement.prototype) {
+      let con = tocContent.children[0].children[0];
+      tocContent.innerHTML = con.innerHTML;
+    }
+    let markdownItTOC = document.querySelector('.markdownIt-TOC');
+    let innerHeight = window.innerHeight;
+    markdownItTOC.style = `max-height: ${innerHeight - 80 > 0 ? innerHeight - 80 : innerHeight}px`
+    addTocNumber(tocContent, '');
+  })();
+
+  document.addEventListener('scroll', function (e) {
+    if (lList.length <= 0) {
+      return;
+    }
+    let scrollTop = document.scrollingElement.scrollTop + 10;
+    let dir;
+
+    if (lastTop - scrollTop > 0) {
+      dir = 'up';
+    } else {
+      dir = 'down';
+    }
+
+    lastTop = scrollTop;
+    if (scrollTop <= 0) {
+      if (lastIndex >= 0 && lastIndex < hList.length) {
+        lList[lastIndex].classList.remove(activeClass);
+      }
+      return;
+    }
+
+    let current = 0, hasFind = false;
+    for (let i = 0; i < hList.length; i++) {
+      if (hList[i].offsetTop > scrollTop) {
+        current = i;
+        hasFind = true;
+        break;
+      }
+    }
+    if (!hasFind && scrollTop > lList[lList.length - 1].offsetTop) {
+      current = hList.length - 1;
+    } else {
+      current--;
+    }
+    if (dir === 'down') {
+      if (current > lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex)
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    } else {
+      if (current < lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex);
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    }
+  });
+
+
+  window.addEventListener('load', function () {
+    showToc();
+    document.querySelector('#sidebar').style = 'display: block;';
+    tocWrapper.classList.add('toc-active');
+    setTimeout(function () {
+      if ("createEvent" in document) {
+        let evt = document.createEvent("HTMLEvents");
+        evt.initEvent("scroll", false, true);
+        document.dispatchEvent(evt);
+      }
+      else {
+        document.fireEvent("scroll");
+      }
+    }, 500)
+  })
+
+</script>
+            </div>
+          
+        
+      </div>
     </div>
+  
+</div>
+<script>
+  const SIDEBAR_TITLE_ACTIVE = 'sidebar-title-active';
+  const SIDEBAR_BODY_ACTIVE = 'sidebar-body-active';
+  const SLIDE_UP_IN = 'slide-up-in';
+
+  let sidebar = document.querySelector('#sidebar'),
+  tocSideBar = document.querySelector('#tocSideBar'),
+  metaSideBar = document.querySelector('#metaSideBar'),
+  postToc = document.querySelector('#post_toc'),
+  postSiteMeta = document.querySelector('#post_side_meta'),
+  sidebarTitle = document.querySelector('.sidebar-title'),
+  sidebarBody = document.querySelector('#sidebar_body');
+
+  tocSideBar && tocSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  metaSideBar && metaSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  function toggleSidebar(e) {
+    let currentTitle = document.querySelector("."+SIDEBAR_TITLE_ACTIVE);
+    if (currentTitle == e.srcElement) {
+      return ;
+    }
+    let current, showElement, hideElement;
+    if (e.srcElement == metaSideBar) {
+      showElement = postSiteMeta;
+      hideElement = postToc;
+    } else if (e.srcElement == tocSideBar){
+      showElement = postToc;
+      hideElement = postSiteMeta;
+    }
+    currentTitle.classList.remove(SIDEBAR_TITLE_ACTIVE);
+    e.srcElement.classList.add(SIDEBAR_TITLE_ACTIVE);
+
+    window.Velocity(hideElement, 'stop');
+    window.Velocity(hideElement, 'transition.slideUpOut', {
+      display: 'none',
+      duration: 200,
+      complete: function () {
+        window.Velocity(showElement, 'transition.slideDownIn', {
+          duration: 200
+        });
+      }
+    })
+    hideElement.classList.remove(SIDEBAR_BODY_ACTIVE);
+    showElement.classList.add(SIDEBAR_BODY_ACTIVE);
+  }
+
+  postToc && postToc.addEventListener('transitionend', function() {
+    this.classList.remove(SLIDE_UP_IN);
+  });
+
+  if (sidebarBody) {
+    if (sidebarBody.classList.contains('pisces') || sidebarBody.classList.contains('gemini')) {
+      let hasFix = false;
+      let scrollEl = document.querySelector('.main-continer');
+      let limitTop = document.querySelector('#nav_ul').children.length * 42 + 162;
+      window.addEventListener('scroll', function(e) {
+        if (document.scrollingElement.scrollTop >= limitTop) {
+          if (!hasFix) {
+            sidebar.classList.add('sidebar-fixed');
+            hasFix = true;
+          }
+        } else {
+          if (hasFix) {
+            sidebar.classList.remove('sidebar-fixed');
+            hasFix = false;
+          }
+        }
+      });
+    }
+  }
+  
+</script>
+        <div class="section-box box-shadow-wrapper">
+          <div class="section bg-color post post-page">
+            <header class="post-header">
+  <h1 class="post-title">
+    <a class="post-title-link" href="http://www.xiaoayu.tk/post/zhao-dao-gua-he-zi-ji-de-wei-zhi-xi-shui-chang-liu-di-zou-xia-qu-wo-hua-liao-20-nian-ni-an-bei-ye-lang/">
+      「找到适合自己的位置，细水长流地走下去，我花了20年呢。」──安倍夜郎
+    </a>
+  </h1>
+  <div class="post-meta">
     
-      
-      
-        <div class="node-title">
-          <h2 class="tag-year">2021</h2>
-        </div>    
-        
-      
-      <a href="http://www.xiaoayu.tk/post/zhao-dao-gua-he-zi-ji-de-wei-zhi-xi-shui-chang-liu-di-zou-xia-qu-wo-hua-liao-20-nian-ni-an-bei-ye-lang/">
-        <div class="motion-warpper tag-archive-node">
-          <div class="tag-node">
-            <h1>
-              02-01
-              <small>「找到适合自己的位置，细水长流地走下去，我花了20年呢。」──安倍夜郎</small>
-            </h1>
-          </div>  
-      </div>
-      </a>
+    <span class="meta-item pc-show">
+      <i class="fa fa-calendar-o"></i>
+      <span>发布于</span>
+      <span>2021-02-01</span>
+      <span class="post-meta-divider pc-show">|</span>
+    </span>
     
+    <span class="meta-item">
+      <i class="fa fa-folder-o"></i>
+      <span class="pc-show">分类于</span>
       
       
-        <div class="node-title">
-          <h2 class="tag-year">2018</h2>
-        </div>    
-        
-      
-      <a href="http://www.xiaoayu.tk/post/hello-gridea/">
-        <div class="motion-warpper tag-archive-node">
-          <div class="tag-node">
-            <h1>
-              12-12
-              <small>Hello Gridea</small>
-            </h1>
-          </div>  
-      </div>
+      <a href="http://www.xiaoayu.tk/tag/TfX2qTq7A/">
+        <span>生活杂谈</span>
       </a>
+      
+      
+    </span>
+    <span class="post-meta-divider">|</span>
+    
+    <span class="meta-item">
+      <i class="fa fa-clock-o"></i>
+      <span>5分钟</span>
+    </span>
+    <span class="meta-item">
+      <span class="post-meta-divider">|</span>
+      <i class="fa fa-file-word-o"></i>
+      <span>1256<span class="pc-show">字数</span></span>
+    </span>
     
   </div>
-  
-<div class="page bg-color">
-  <ul class="pagination-ul">
-    
-    
-      
-        <li class="pagination-li pagination-active">
-            <a href="/archives/page/../">
-              1
-            </a>
-        </li>
-      
-    
-    
-  </ul>
-</div>
-</div>
+</header>
+            <div class="post-body next-md-body" id="post_body">
+              <p><ul class="markdownIt-TOC">
+<li><a href="#%E5%9B%9B%E5%8D%81%E4%B8%80%E5%B2%81%E6%89%8D%E5%87%BA%E9%81%93%E5%A4%AA%E4%B8%8D%E5%AF%BB%E5%B8%B8%E4%BA%86%E5%90%A7">四十一岁才出道，太不寻常了吧？😬</a></li>
+</ul>
+<br>
+《深夜閒話：安倍夜郎雜文集》读后感。</p>
+<!-- more -->
+<hr>
+<p>##关于这本书👇<br>
+做过19年广告导演，他从未放弃漫画家梦，<br>
+一部作品反复磨3年，41岁才以新人奖出道。<br>
+得奖的那一刻，他告诉自己：啊，这样就可以辞职了。<br>
+人生的梦想路，走慢一点，也可以。<br>
+只要是真心喜爱，总会找到合适自己的路</p>
+<p>从个性胆怯的乡下少年，到百万畅销漫画家，<br>
+笨拙的童年、平凡的经历，他从不担心。<br>
+只是一心慢慢寻找那个适合自己的位置。<br>
+他说的故事没什么大不了，常常是平淡的家乡记忆，或不值一提的琐事。<br>
+只追求简单的幸福，只想细水长流地画着打动自己的生活故事。</p>
+<hr>
+<h1 id="四十一岁才出道太不寻常了吧">四十一岁才出道，太不寻常了吧？😬</h1>
+<p>「不会啊，我只是平平凡凡地走到现在而已。」</p>
+<p>暖心又暖胃的日本国民饮食漫画《深夜食堂》红遍全亚洲，但作者安倍夜郎的「漫画家之路」却不是一开始就走得如此顺遂。四十一岁「中年出道」的他，做过十九年默默无名的广告导演，三十六岁重拾少年时代的画笔，鼓起勇气投稿却屡投不中，让心中的漫画家梦一再延迟，直到四十岁获得新人奖，才毅然决然辞去工作。辞职成为漫画家后，他的处女作《山本掏耳店》连载三、四次就被腰斩，此后更长达三年没有新作发表，只能靠老本过活……回头来看这些事，安倍夜郎描述得云淡风轻，谦称自己「生来愚钝」，只是「平平凡凡地走到现在而已。」</p>
+<p>对于漫画，安倍夜郎一直没有太大的企图心，只是低着头一次画一百张地练习着，然后顺其自然地随从本心。他的灵感多来自家乡往事，和周遭的同学老友，但平凡无奇的生活经验，却不影响他慢慢找到属于自己的位置。「我画的世界都很小，故事也很小……找到适合自己的位置，细水长流地走下去，我花了二十年呢。」《深夜食堂》道尽了常客们的百味人生，这一次，他用文字说自己的真实故事。</p>
+<hr>
+<p>##「不管如何，都是些没什么大不了的事啊！」😲<br>
+那些看似不值一提的琐碎日常，才是生活的真正滋味。</p>
+<p>本书的第一部分，是由安倍夜郎发表在家乡当地杂志的专栏所组成，专栏名称是土佐方言，意为「没什么大不了的日常琐事」。他笔下的文字如同漫画，情感真挚质朴，是最深入的寻常市井的生活观察，而内容却是随兴而至，从回忆家乡往事，到《深夜食堂》的创作历程无所不包，闲谈式的零碎记述一如他的人生哲学，总是能从没有波澜的细琐日常中，慢慢地、静静地，提炼出引人共鸣的生活况味。</p>
+<p>构成本书第二部分的，则是生性低调的安倍夜郎「漫画家人生」最完整的一次访谈，在安倍三十年的老友，也是日本文化观察家的堀井宪一郎犀利提问下，一一从实招来。谁说四十一岁出道会太晚？资质平庸又如何？只要朝向梦想稳扎稳打地前进，人人都能以自己合适的方式散发光芒。没有教条式的说理，也没有方法论，安倍夜郎只将平凡到底的生活娓娓到来，却最能激励人心。看安倍大叔中年转行，稳定而扎实地步步走向自己真正想要的生活。</p>
+<hr>
+<p>##我的推荐理由❤️<br>
+👀「朴实而动情的文字，充满怀旧气息的回忆点滴，一点一点娓娓道来。」<br>
+😢「安倍夜郎的散文就如同深夜食堂，慢慢的静静的，读起来轻松简单，却能从中得到安慰。」<br>
+👍「喜欢安倍夜郎的幽默感与人生态度。寥寥几笔描述也能动人，这就是漫画家的表达功力吧。」<br>
+🙇「简单又疗愈的书！让人不禁好奇土佐的方言和食物。」<br>
+😆「深夜食堂角色原型片段跃然纸上。」<br>
+🤓「真实的人生比漫画更疗愈人心。」<br>
+🙊「安倍夜郎的小故事就和《深夜食堂》一样，没什么大不了，却闪闪发光，读来备感精神。」<br>
+🍃「作者的幽默常常让我忍不住笑出来。许多回忆也能引人共鸣，令人感动。」<br>
+🌛「只有内心温暖的人，才能创作出那么治愈人心的故事啊。」<br>
+🙈「大概是这些年来我看过最温暖的一本书了吧！」</p>
 
-          </section>
+            </div>
+            <div class="post-footer">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      小阿宇
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://www.xiaoayu.tk/post/zhao-dao-gua-he-zi-ji-de-wei-zhi-xi-shui-chang-liu-di-zou-xia-qu-wo-hua-liao-20-nian-ni-an-bei-ye-lang/" title="「找到适合自己的位置，细水长流地走下去，我花了20年呢。」──安倍夜郎">http://www.xiaoayu.tk/post/zhao-dao-gua-he-zi-ji-de-wei-zhi-xi-shui-chang-liu-di-zou-xia-qu-wo-hua-liao-20-nian-ni-an-bei-ye-lang/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+  <div class="tags">
+    
+      <a href="http://www.xiaoayu.tk/tag/TfX2qTq7A/"># 生活杂谈</a>
+    
+  </div>
+  <div class="nav">
+    <div class="nav-prev">
+      
+    </div>
+    <div class="nav-next">
+      
+        <a class="nav-pc-next" title="Hello Gridea" href="http://www.xiaoayu.tk/post/hello-gridea/">Hello Gridea</a>
+        <a class="nav-mobile-next" title="Hello Gridea" href="http://www.xiaoayu.tk/post/hello-gridea/">下一篇</a>
+        <i class="fa fa-chevron-right"></i>
+      
+    </div>
+  </div>
+</div>
+            
+  <script src="https://cdn.jsdelivr.net/npm/valine@1.4.4/dist/Valine.min.js"></script>
+<div id="vcomments" style="padding: 10px 0px 0px 0px"></div>
+
+<style>
+  .v .veditor {
+    min-height: 10rem;
+    background-image: url('https://upimage.alexhchu.com/2020/04/21/47eda59424daa.gif');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-color: rgba(255, 255, 255, 0);
+    resize: none;
+  }
+
+  .v .vwrap {
+    border: 1px solid #000 !important;
+  }
+
+  .v .vbtn {
+    padding: .4rem 1.2rem !important;
+    border-color: #fff !important;
+    background-color: #49b1f5 !important;
+    color: #fff !important;
+    font-size: .7rem !important;
+  }
+
+  .v .vcards .vcard .vh .vmeta .vat {
+    padding: 0 .8rem !important;
+    border: 1px solid #00c4b6 !important;
+    border-radius: 5px !important;
+    color: #00c4b6 !important;
+  }
+</style>
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'LN8O2J0tMGgluGOVnWVXhwzB-gzGzoHsz',
+    appKey: 'cCgxetGKNOTMwFr7vyxIuKc5',
+    avatar: 'wavatar',
+    placeholder: '',
+    pageSize: '',
+    lang: 'zh-cn',
+    visitor: 'true' === 'false',
+    highlight: 'true' === 'true',
+    avatarForce: 'true' === 'false',
+  });
+</script>
+
+          </div>
         </div>
       </div>
     </div>
@@ -1064,6 +1434,36 @@ jack(document.getElementById('jack'));</script> <div align="left"></div></div>
   hljs.initHighlightingOnLoad();
 
 </script>
+    <div class="light-box" id="light_box"></div>
+<script>
+  let imgs = document.querySelectorAll('.post-body img');
+  let lightBox = document.querySelector('#light_box');
+  lightBox.addEventListener('mousedown', (e) => {
+    e.preventDefault()
+  })
+  lightBox.addEventListener('mousewheel', (e) => {
+    e.preventDefault()
+  })
+  let width = window.innerWidth * 0.8;
+  lightBox.onclick = () => {
+    let img = lightBox.querySelector('img');
+    lightBox.style = '';
+    img && img.remove();
+  }
+  imgs.forEach(item => {
+    item.onclick = function (e) {
+      let lightImg = document.createElement('img');
+      lightImg.src = this.src;
+      lightBox.style = `height: 100%; opacity: 1; background-color: rgba(0, 0, 0, 0.5);cursor: zoom-out;`;
+      lightImg.style = `width: ${width}px; border: 1px solid #fff; border-radius: 2px;`;
+      lightImg.onclick = function () {
+        lightBox.style = '';
+        this.remove();
+      }
+      lightBox.append(lightImg);
+    }
+  })
+</script>
   </div>
 </body>
 <input hidden id="copy" />
@@ -1284,6 +1684,5 @@ jack(document.getElementById('jack'));</script> <div align="left"></div></div>
 
 
 <script src=" /media/js/cool.js"></script>
-
 
 </html>
