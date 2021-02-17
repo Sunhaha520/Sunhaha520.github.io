@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.xiaoayu.tk</id>
     <title>阿宇のBlog</title>
-    <updated>2021-02-17T21:09:05.929Z</updated>
+    <updated>2021-02-17T21:57:21.250Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.xiaoayu.tk"/>
     <link rel="self" href="http://www.xiaoayu.tk/atom.xml"/>
@@ -10,6 +10,41 @@
     <logo>http://www.xiaoayu.tk/images/avatar.png</logo>
     <icon>http://www.xiaoayu.tk/favicon.ico</icon>
     <rights>All rights reserved 2021, 阿宇のBlog</rights>
+    <entry>
+        <title type="html"><![CDATA[为网页添加一个天气插件]]></title>
+        <id>http://www.xiaoayu.tk/post/wei-wang-ye-tian-jia-yi-ge-tian-qi-cha-jian/</id>
+        <link href="http://www.xiaoayu.tk/post/wei-wang-ye-tian-jia-yi-ge-tian-qi-cha-jian/">
+        </link>
+        <updated>2021-02-17T21:30:24.000Z</updated>
+        <summary type="html"><![CDATA[<p>我们该如何给自己的网页添加一个天气插件？😲</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>我们该如何给自己的网页添加一个天气插件？😲</p>
+<!-- more -->
+<h2 id="准备材料">准备材料</h2>
+<ol>
+<li>
+<p><a href="http://u2.weather.com.cn/web/sso/mobile/phoneNumberRegistIndex.do?returnUrl=/web/dashboard/index.do">注册中国天气网帐号</a></p>
+</li>
+<li>
+<p>一台电脑，一双手，一个聪明的脑袋瓜。😎</p>
+</li>
+</ol>
+<h2 id="开始行动">开始行动</h2>
+<p>登录好中国天气网帐号以后，直接打开天气插件网页：https://cj.weather.com.cn/plugin/pc</p>
+<p>然后根据自己的需要自定义插件样式。</p>
+<p>自定义样式完成后输入自定义插件名称，点击生成代码，就会看到类似下方代码：</p>
+<pre><code>&lt;!-- test --&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+WIDGET = {FID: '**********'}
+&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://apip.weatherdt.com/float/static/js/r.js?v=1111&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>将生成的代码复制到html文件里即可。</p>
+<h2 id="效果预览">效果预览</h2>
+<p>成功以后，你就可以在你的网站顶部看到这个天气小插件啦。😏</p>
+<figure data-type="image" tabindex="1"><img src="http://www.xiaoayu.tk/post-images/1613598793225.jpg" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[「找到适合自己的位置，细水长流地走下去，我花了20年呢。」──安倍夜郎]]></title>
         <id>http://www.xiaoayu.tk/post/bo/</id>
