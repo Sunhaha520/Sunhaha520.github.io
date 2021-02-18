@@ -2084,7 +2084,7 @@ body {
       }
     @font-face {
       font-family: 'kuaileti';
-      src: url('/media/fonts/kuaileti.ttf');
+      src: url('https://cdn.jsdelivr.net/gh/Sunhaha520/Sunhaha520.github.io@master/media/fonts/kuaileti.ttf');
     }
     * {
         font-family: 'kuaileti';
