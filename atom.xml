@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://sunhaha520.github.io</id>
     <title>阿宇のBlog</title>
-    <updated>2021-02-20T01:56:01.681Z</updated>
+    <updated>2021-03-11T20:12:36.926Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://sunhaha520.github.io"/>
     <link rel="self" href="https://sunhaha520.github.io/atom.xml"/>
@@ -10,6 +10,104 @@
     <logo>https://sunhaha520.github.io/images/avatar.png</logo>
     <icon>https://sunhaha520.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 阿宇のBlog</rights>
+    <entry>
+        <title type="html"><![CDATA[数据结构打卡学习笔记]]></title>
+        <id>https://sunhaha520.github.io/post/shu-ju-jie-gou-da-qia-xue-xi-bi-ji/</id>
+        <link href="https://sunhaha520.github.io/post/shu-ju-jie-gou-da-qia-xue-xi-bi-ji/">
+        </link>
+        <updated>2021-03-11T20:02:36.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="数据结构概述">数据结构概述</h2>
+<ul>
+<li>
+<p>定义：我们如何把现实中大量而复杂的问题一特定的数据类型和特定的存储结构保存到主存储器（内存）中，以及在此基础上以实现某个功能（比如查找某个元素，删除某个元素，对所有元素进行排序）而执行的相应操作，这个相应的操作也叫算法。</p>
+</li>
+<li>
+<p>数据结构=个体+个体关系</p>
+</li>
+<li>
+<p>算法=对存储数据的操作</p>
+</li>
+<li>
+<p>算法：1.解题的方法和步骤</p>
+<p>​            2.衡量算法的标准：时间复杂度（程序执行次数，而非执行时间）（计算机性能不同）</p>
+<p>​                                              空间复杂度：算法执行过程中大概占用的最大内存</p>
+<p>​                                              难易程度（别人要能看懂）</p>
+<p>​                                               健壮性（正确性就算了，废话，不正确就不叫算法了）</p>
+<p>数据结构的地位：数据结构是软件中最核心的课程</p>
+<p>程序=数据的存储+数据操作+可以被计算机执行的语言</p>
+</li>
+</ul>
+<h2 id="预备知识">预备知识</h2>
+<p>指针：指针是C语言的灵魂</p>
+<p>定义：地址：内存单元的编号</p>
+<p>​                       从0开始的非负整数</p>
+<p>​                       范围：0--FFFFFFFF（0-4G-1）</p>
+<p>​            指针：指针就是地址，地址就是指针</p>
+<p>​                       指针变量是存放内存单元地址的变量</p>
+<p>​                       指针的本质是一个操作受限的非负整数</p>
+<p>​            分类：1.基本类型的指针</p>
+<p>​                        2.指针和数组的关系</p>
+<pre><code>int i=10;
+int *p=&amp;i;//等价于int *p;  p=&amp;i;
+</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+int main(void)
+{
+    int *p;//P是变量名字，int*表示该p变量只能存储int型变量的地址
+    int i=10;
+    int j;
+    
+    p=&amp;i;
+    *p=i;//等价于i=i
+    printf(&quot;i=%d,j=%d,*p=%d\n&quot;,i,j,*p);
+    return 0;
+}
+</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+void f(int i)
+{
+	i=100;
+}
+int main(void)
+{
+	int i=9;//以栈方式压入
+	f(i);
+	printf(&quot;i=%d\n&quot;,i);
+	return 0
+}
+</code></pre>
+<p>动态内存的分配和释放</p>
+<h3 id="模块一线性结构">模块一：线性结构</h3>
+<ol>
+<li>连续存储{数组}</li>
+<li>离散结构{链表}</li>
+<li>线性结构的两种常见应用之一 栈</li>
+<li>线性结构的两种常见应用之二 队列</li>
+</ol>
+<h3 id="专题递归">专题：递归</h3>
+<ol>
+<li>
+<p>1+2+3+4......+n的和</p>
+</li>
+<li>
+<p>求介乘</p>
+</li>
+<li>
+<p>汉诺塔</p>
+</li>
+<li>
+<p>走迷宫</p>
+</li>
+</ol>
+<h3 id="模块二非线性结构">模块二：非线性结构</h3>
+<ol>
+<li>树</li>
+<li>图</li>
+</ol>
+<h3 id="模块三查找和排序">模块三：查找和排序</h3>
+<h3 id="java中容器和数据结构相关的知识">Java中容器和数据结构相关的知识</h3>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[为网页添加一个天气插件]]></title>
         <id>https://sunhaha520.github.io/post/xianqi/</id>
